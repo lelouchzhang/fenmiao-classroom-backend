@@ -9,8 +9,8 @@ router.get("/", async (req, res) => {
   try {
     const { search, department, page = 1, limit = 10 } = req.query;
     // 数据预处理
-    const currentPage = Math.max(1, +page);
-    const pageSize = Math.max(1, +limit);
+    const currentPage = Math.max(1, parseInt(String(page), 10) || 1);
+    const pageSize = Math.max(1, parseInt(String(limit), 10) || 100);
     const offset = (currentPage - 1) * pageSize;
     const filterConditions = [];
     // 构筑whereclause
@@ -23,7 +23,8 @@ router.get("/", async (req, res) => {
       );
     }
     if (department) {
-      filterConditions.push(ilike(departments.name, `${department}%`));
+      const deptPattern = `${String(department).replace(/[%_]/g, "\\$&")}%`;
+      filterConditions.push(ilike(departments.name, deptPattern));
     }
     const whereClause =
       filterConditions.length > 0 ? and(...filterConditions) : undefined;
