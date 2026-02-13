@@ -8,6 +8,7 @@ import {
   jsonb,
   index,
   foreignKey,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth";
 import { relations } from "drizzle-orm";
@@ -89,7 +90,10 @@ export const enrollments = pgTable(
   (table) => [
     index("enrollments_student_id_idx").on(table.studentId),
     index("enrollments_class_id_idx").on(table.classId),
-    index("enrollment_student_class_unique").on(table.studentId, table.classId),
+    uniqueIndex("enrollment_student_class_unique").on(
+      table.studentId,
+      table.classId
+    ),
   ]
 );
 
