@@ -15,6 +15,34 @@
       "when": 1770128244133,
       "tag": "0001_dazzling_the_captain",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770997943167,
+      "tag": "0002_lush_rumiko_fujikawa",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1770998360394,
+      "tag": "0003_easy_diamondback",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770998457035,
+      "tag": "0004_concerned_colonel_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1770999296413,
+      "tag": "0005_slim_the_initiative",
+      "breakpoints": true
     }
   ]
 }
