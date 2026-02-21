@@ -38,7 +38,7 @@ const securityMiddleware = async (
         max: limit,
       })
     );
-    const arkjectRequest: ArcjetNodeRequest = {
+    const arkjctRequest: ArcjetNodeRequest = {
       headers: req.headers,
       method: req.method,
       url: req.originalUrl ?? req.url,
@@ -47,7 +47,7 @@ const securityMiddleware = async (
       },
     };
 
-    const decision = await client.protect(arkjectRequest);
+    const decision = await client.protect(arkjctRequest);
 
     if (decision.isDenied() && decision.reason.isBot()) {
       return res.status(403).json({
@@ -80,7 +80,7 @@ const securityMiddleware = async (
       error: "服务器错误",
       message: "Arcjet 中间件发生错误，请稍后再试或联系管理员",
     });
-    next(error);
+    return;
   }
 };
 
