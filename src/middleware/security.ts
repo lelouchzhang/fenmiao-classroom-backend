@@ -80,6 +80,7 @@ const securityMiddleware = async (
       error: "服务器错误",
       message: "Arcjet 中间件发生错误，请稍后再试或联系管理员",
     });
+    next(error);
   }
 };
 
