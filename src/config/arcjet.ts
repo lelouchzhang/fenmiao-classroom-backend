@@ -6,13 +6,14 @@ import arcjet, {
 } from "@arcjet/node";
 
 if (!process.env.ARCJET_KEY && process.env.ARCJET_ENV !== "development") {
-  throw new Error("ARCJET_XXX must be set to development");
+  throw new Error(
+    "ARCJET_KEY environment variable is required. Set ARCJET_KEY or set ARCJET_ENV=development to skip."
+  );
 }
-
 const aj = arcjet({
   // Get your site key from https://app.arcjet.com and set it as an environment
   // variable rather than hard coding.
-  key: process.env.ARCJET_KEY!,
+  key: process.env.ARCJET_KEY ?? "",
   rules: [
     // Shield protects your app from common attacks e.g. SQL injection
     shield({ mode: "LIVE" }),
@@ -38,11 +39,6 @@ const aj = arcjet({
     //   interval: 10, // Refill every 10 seconds
     //   capacity: 10, // Bucket capacity of 10 tokens
     // }),
-    slidingWindow({
-      mode: "LIVE",
-      interval: "2s",
-      max: 5,
-    }),
   ],
 });
 

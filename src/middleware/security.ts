@@ -8,7 +8,7 @@ const securityMiddleware = async (
   next: NextFunction
 ) => {
   // 测试环境跳过检查
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.ARCJET_ENV === "development") {
     return next();
   }
 
@@ -65,6 +65,12 @@ const securityMiddleware = async (
       return res.status(403).json({
         error: "Forbidden",
         message: "请求被网站安全策略阻止",
+      });
+    }
+    if (decision.isDenied()) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "请求被安全策略拒绝",
       });
     }
     next();
