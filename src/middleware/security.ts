@@ -8,7 +8,7 @@ const securityMiddleware = async (
   next: NextFunction
 ) => {
   // 测试环境跳过检查
-  if (process.env.ARCJET_ENV === "development") {
+  if (process.env.NODE_ENV === "test") {
     return next();
   }
 

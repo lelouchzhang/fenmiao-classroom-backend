@@ -20,6 +20,7 @@ app.use(securityMiddleware);
 app.get("/", (req, res) => res.send("Hello World"));
 
 app.use("/api/subjects", subjectsRouter);
+app.set("trust proxy", true);
 
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);
