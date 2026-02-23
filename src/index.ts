@@ -3,6 +3,7 @@ import cors from "cors";
 import subjectsRouter from "./routes/subjects";
 import { auth } from "./lib/auth";
 import { toNodeHandler } from "better-auth/node";
+import securityMiddleware from "./middleware/security";
 
 const app = express();
 const PORT = 8000;
@@ -18,9 +19,12 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(express.json());
 
+app.use(securityMiddleware);
+
 app.get("/", (req, res) => res.send("Hello World"));
 
 app.use("/api/subjects", subjectsRouter);
+app.set("trust proxy", true);
 
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);
