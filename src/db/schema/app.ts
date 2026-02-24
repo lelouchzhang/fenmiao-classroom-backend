@@ -7,10 +7,9 @@ import {
   text,
   jsonb,
   index,
-  foreignKey,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { user } from "./auth";
+import { user } from "./auth.js";
 import { relations } from "drizzle-orm";
 
 const timestamps = {
