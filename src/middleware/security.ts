@@ -18,16 +18,16 @@ const securityMiddleware = async (
     let message: string;
     switch (role) {
       case "admin":
-        limit = 20;
+        limit = 200;
         message = "管理员用户请求速率为每分钟20次. Slow Down!";
         break;
       case "teacher":
       case "student":
-        limit = 10;
+        limit = 100;
         message = "超过注册用户的安全请求速率:每分钟10次,清稍等";
         break;
       default:
-        limit = 5;
+        limit = 50;
         message = "游客用户限制每分钟5次网络请求,注册后可获得更好体验.";
         break;
     }
