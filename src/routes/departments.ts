@@ -223,6 +223,7 @@ router.get("/:id/classes", async (req, res) => {
           id: user.id,
           name: user.name,
           image: user.image,
+          role: user.role,
         },
       })
       .from(classes)
