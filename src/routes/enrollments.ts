@@ -1,5 +1,5 @@
 import express from "express";
-import { and, eq, getTableColumns } from "drizzle-orm";
+import { and, eq, getTableColumns, sql } from "drizzle-orm";
 
 import { db } from "../db/index.js";
 import {
@@ -26,7 +26,10 @@ const getEnrollmentDetails = async (enrollmentId: number) => {
         ...getTableColumns(departments),
       },
       teacher: {
-        ...getTableColumns(user),
+        id: user.id,
+        name: user.name,
+        image: user.image,
+        role: user.role,
       },
     })
     .from(enrollments)
@@ -60,9 +63,12 @@ router.post("/", async (req, res) => {
     const [student] = await db
       .select()
       .from(user)
-      .where(eq(user.id, studentId));
+      .where(and(eq(user.id, studentId), eq(user.role, "student")));
 
-    if (!student) return res.status(404).json({ error: "Student not found" });
+    if (!student)
+      return res
+        .status(404)
+        .json({ error: "Student not found or user is not a student" });
 
     const [existingEnrollment] = await db
       .select({ id: enrollments.id })
@@ -78,7 +84,15 @@ router.post("/", async (req, res) => {
       return res
         .status(409)
         .json({ error: "Student already enrolled in class" });
+    // Check class capacity
+    const [enrollmentCount] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(enrollments)
+      .where(eq(enrollments.classId, classId));
 
+    if ((enrollmentCount?.count ?? 0) >= classRecord.capacity) {
+      return res.status(409).json({ error: "Class is full" });
+    }
     const [createdEnrollment] = await db
       .insert(enrollments)
       .values({ classId, studentId })

@@ -61,7 +61,10 @@ router.get("/latest", async (req, res) => {
             ...getTableColumns(subjects),
           },
           teacher: {
-            ...getTableColumns(user),
+            id: user.id,
+            name: user.name,
+            image: user.image,
+            role: user.role,
           },
         })
         .from(classes)
