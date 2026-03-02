@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 
 if (!process.env.DATABASE_URL) {
-  throw new Error("请在.env中配置DATABASE_URL");
+  throw new Error("请配置DATABASE_URL");
 }
 
 const sql = neon(process.env.DATABASE_URL);
