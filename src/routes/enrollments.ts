@@ -90,9 +90,16 @@ router.post("/", async (req, res) => {
       .from(enrollments)
       .where(eq(enrollments.classId, classId));
 
+    // Check class capacity
+    const [enrollmentCount] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(enrollments)
+      .where(eq(enrollments.classId, classId));
+
     if ((enrollmentCount?.count ?? 0) >= classRecord.capacity) {
       return res.status(409).json({ error: "Class is full" });
     }
+
     const [createdEnrollment] = await db
       .insert(enrollments)
       .values({ classId, studentId })
