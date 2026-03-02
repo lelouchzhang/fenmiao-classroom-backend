@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
       filterConditions.push(
         or(
           ilike(departments.name, `${search}%`),
-          ilike(departments.code, `${search}`)
+          ilike(departments.code, `${search}%`)
         )
       );
     }
@@ -71,11 +71,17 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { code, name, description } = req.body;
+    if (!code || typeof code !== "string" || !code.trim()) {
+      return res.status(400).json({ error: "code is required" });
+    }
+    if (!name || typeof name !== "string" || !name.trim()) {
+      return res.status(400).json({ error: "name is required" });
+    }
     const [createdDepartment] = await db
       .insert(departments)
-      .values({ code, name, description })
+      .values({ code: code.trim(), name: name.trim(), description })
       .returning({ id: departments.id });
-    if (!createdDepartment) throw Error;
+    if (!createdDepartment) throw new Error("Department creation failed");
     res.status(201).json({ data: createdDepartment });
   } catch (error) {
     console.error("POST /departments error:", error);
@@ -214,7 +220,9 @@ router.get("/:id/classes", async (req, res) => {
           ...getTableColumns(subjects),
         },
         teacher: {
-          ...getTableColumns(user),
+          id: user.id,
+          name: user.name,
+          image: user.image,
         },
       })
       .from(classes)
