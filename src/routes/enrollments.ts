@@ -84,11 +84,6 @@ router.post("/", async (req, res) => {
       return res
         .status(409)
         .json({ error: "Student already enrolled in class" });
-    // Check class capacity
-    const [enrollmentCount] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(enrollments)
-      .where(eq(enrollments.classId, classId));
 
     // Check class capacity
     const [enrollmentCount] = await db
